@@ -5,13 +5,15 @@ import (
 	"net"
 )
 
-func InitUdpConnection() (*Client, error) {
+func InitUdpConnection() (ClientInterface, error) {
 	fmt.Println("*********** init udp connection **********")
 	conn, err := net.Dial("udp", "localhost:11212")
 	if err != nil {
 		return nil, err
 	}
-	return &Client{conn: conn}, nil
+	client := Client{conn: conn}
+	clientInterface := ClientInterface(&client)
+	return clientInterface, nil
 }
 
 func (client *Client) CloseConnection() error {
